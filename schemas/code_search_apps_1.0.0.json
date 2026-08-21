@@ -1,0 +1,163 @@
+{
+  "schema_key": "code_search:apps:1.0.0",
+  "dataset": "CoIR-Retrieval/apps",
+  "subset": "corpus",
+  "split": null,
+  "created_at": "2026-06-19T02:40:31.390456Z",
+  "frequencies": {
+    "0.1": {
+      "name": "competitive_programming",
+      "type": "text",
+      "description": "Competitive-programming domain prior over algorithmic problem statements and their code solutions.",
+      "role_family": "domain_prior",
+      "shared_concept_id": "domain_anchor",
+      "value_cardinality": "single",
+      "graph_role": "domain",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "0.5": {
+      "name": "problem_category",
+      "type": "text",
+      "description": "Algorithmic problem category such as greedy, dynamic programming, graph, string, or math.",
+      "role_family": "entity_or_task_type",
+      "shared_concept_id": "artifact_type",
+      "value_cardinality": "single",
+      "graph_role": "node_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "2.0": {
+      "name": "algorithmic_approach",
+      "type": "text",
+      "description": "Core algorithmic approach or solution strategy linking the problem to its implementation.",
+      "role_family": "relation_structure",
+      "shared_concept_id": "relation_anchor",
+      "value_cardinality": "single",
+      "graph_role": "edge_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "4.0": {
+      "name": "complexity_constraint",
+      "type": "text",
+      "description": "Input-size, time, and space constraints that shape an acceptable solution.",
+      "role_family": "attribute_focus",
+      "shared_concept_id": "attribute_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "node_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "6.0": {
+      "name": "problem_context",
+      "type": "text",
+      "description": "Problem setup, input/output format, and worked examples needed to interpret the task.",
+      "role_family": "context_frame",
+      "shared_concept_id": "context_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "context",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "10.0": {
+      "name": "problem_statement",
+      "type": "text",
+      "description": "Primary natural-language problem statement describing what must be computed.",
+      "role_family": "main_content",
+      "shared_concept_id": "task_description",
+      "value_cardinality": "single",
+      "graph_role": "primary_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "12.0": {
+      "name": "solution_code",
+      "type": "text",
+      "description": "Source-code solution that solves the problem; the retrieval target.",
+      "role_family": "evidence_support",
+      "shared_concept_id": "supporting_evidence",
+      "value_cardinality": "multi",
+      "graph_role": "supporting_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "18.0": {
+      "name": "input_spec",
+      "type": "text",
+      "description": "Input specification or starter code consumed by the solution.",
+      "role_family": "source_role",
+      "shared_concept_id": "source_anchor",
+      "value_cardinality": "single",
+      "graph_role": "source",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "19.0": {
+      "name": "output_spec",
+      "type": "text",
+      "description": "Expected output or result the solution must produce.",
+      "role_family": "target_role",
+      "shared_concept_id": "target_anchor",
+      "value_cardinality": "single",
+      "graph_role": "target",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "24.0": {
+      "name": "algorithm_operation",
+      "type": "text",
+      "description": "Named algorithmic operation or data structure used (sort, BFS, hashmap, DP table).",
+      "role_family": "property_or_named_relation",
+      "shared_concept_id": "named_operation",
+      "value_cardinality": "multi",
+      "graph_role": "edge_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "30.0": {
+      "name": "variable_and_function_names",
+      "type": "text",
+      "description": "Variable, function, and structure identifiers in the solution; disambiguates structurally similar solutions.",
+      "role_family": "identifier",
+      "shared_concept_id": "identifier_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "identifier",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "40.0": {
+      "name": "implementation_detail",
+      "type": "text",
+      "description": "Statement-level implementation tokens: loops, conditionals, literals, and edge-case handling.",
+      "role_family": "local_detail",
+      "shared_concept_id": "detail_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "detail",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "50.0": {
+      "name": "solution_rationale",
+      "type": "text",
+      "description": "Reasoning mapping the problem constraints to the chosen algorithm and implementation.",
+      "role_family": "rationale_explanation",
+      "shared_concept_id": "rationale_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "explanation",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "70.0": {
+      "name": "language_label",
+      "type": "text",
+      "description": "Programming language of the solution code.",
+      "role_family": "label_or_outcome",
+      "shared_concept_id": "label_anchor",
+      "value_cardinality": "single",
+      "graph_role": "label",
+      "temporal_role": "none",
+      "query_time_only": false
+    }
+  }
+}

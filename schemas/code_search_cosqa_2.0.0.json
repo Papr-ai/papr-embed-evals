@@ -1,0 +1,164 @@
+{
+  "schema_key": "code_search:cosqa:2.0.0",
+  "dataset": "code_search_net",
+  "subset": "python",
+  "split": "train",
+  "created_at": "2026-04-09T04:31:11.873888Z",
+  "frequencies": {
+    "0.1": {
+      "name": "programming_domain",
+      "type": "text",
+      "description": "High-level programming domain (e.g., Data_Processing for pandas/numpy operations)",
+      "role_family": "domain_prior",
+      "shared_concept_id": "domain_anchor",
+      "value_cardinality": "single",
+      "graph_role": "domain",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "0.5": {
+      "name": "language",
+      "type": "text",
+      "description": "Programming language (CosQA is primarily Python)",
+      "role_family": "entity_or_task_type",
+      "shared_concept_id": "artifact_type",
+      "value_cardinality": "single",
+      "graph_role": "node_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "2.0": {
+      "name": "query_intent",
+      "type": "text",
+      "description": "What the user wants to accomplish. Be SPECIFIC. Good: 'convert JSON string to Python dict', 'find all files matching pattern'. Bad: 'data processing', 'file operations' (too generic).",
+      "role_family": "relation_structure",
+      "shared_concept_id": "relation_anchor",
+      "value_cardinality": "single",
+      "graph_role": "edge_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "4.0": {
+      "name": "primary_operation",
+      "type": "text",
+      "description": "Main operation in 3-5 words. Be MAXIMALLY SPECIFIC. Good: 'parse CSV to DataFrame', 'regex match email addresses'. Bad: 'data processing', 'string operations' (too generic).",
+      "role_family": "attribute_focus",
+      "shared_concept_id": "attribute_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "node_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "6.0": {
+      "name": "key_apis",
+      "type": "text",
+      "description": "Primary API/module used. Include module path. Examples: 'os.path.join', 'json.loads', 'pandas.read_csv', 're.findall'",
+      "role_family": "context_frame",
+      "shared_concept_id": "context_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "context",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "10.0": {
+      "name": "data_types_used",
+      "type": "text",
+      "description": "Data types/structures used. Be specific about types. Examples: 'list[dict]', 'pandas.DataFrame', 'bytes', 'collections.Counter', 'nested dict with string keys', 'generator of tuples'",
+      "role_family": "main_content",
+      "shared_concept_id": "task_description",
+      "value_cardinality": "single",
+      "graph_role": "primary_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "12.0": {
+      "name": "operation_verbs",
+      "type": "text",
+      "description": "Action verbs describing what the code does. Extract up to 3. Examples: 'read, parse, filter', 'sort, deduplicate', 'encode, compress, write'",
+      "role_family": "evidence_support",
+      "shared_concept_id": "supporting_evidence",
+      "value_cardinality": "multi",
+      "graph_role": "supporting_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "18.0": {
+      "name": "secondary_apis",
+      "type": "text",
+      "description": "Additional APIs/modules used beyond the primary. Extract up to 3. Examples: 'collections.defaultdict', 'functools.partial', 'itertools.chain'",
+      "role_family": "source_role",
+      "shared_concept_id": "source_anchor",
+      "value_cardinality": "single",
+      "graph_role": "source",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "19.0": {
+      "name": "return_behavior",
+      "type": "text",
+      "description": "What the code returns or produces. Examples: 'filtered list', 'boolean indicating success', 'generator of matches', 'modified dict in-place', 'None (side effect only)'",
+      "role_family": "target_role",
+      "shared_concept_id": "target_anchor",
+      "value_cardinality": "single",
+      "graph_role": "target",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "24.0": {
+      "name": "algorithm_pattern",
+      "type": "text",
+      "description": "Algorithm or pattern used. Be specific about the approach. Examples: 'recursive tree traversal', 'sliding window with dict', 'list comprehension with filter', 'context manager for file'",
+      "role_family": "property_or_named_relation",
+      "shared_concept_id": "named_operation",
+      "value_cardinality": "multi",
+      "graph_role": "edge_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "30.0": {
+      "name": "input_output_signature",
+      "type": "text",
+      "description": "Function signature style: input types -> output type. Examples: 'str -> list[str]', 'list[dict], str -> DataFrame', 'file_path: str -> bytes', '**kwargs -> None'",
+      "role_family": "identifier",
+      "shared_concept_id": "identifier_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "identifier",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "40.0": {
+      "name": "dependencies",
+      "type": "text",
+      "description": "External dependencies required. 'stdlib' if standard library only. Examples: 'numpy, pandas', 'requests', 'stdlib', 'PIL, numpy'",
+      "role_family": "local_detail",
+      "shared_concept_id": "detail_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "detail",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "50.0": {
+      "name": "specific_task",
+      "type": "text",
+      "description": "Specific task in 5-10 words. Most discriminating field. Good: 'flatten nested dictionary preserving leaf keys'. Bad: 'process dictionary' (too generic).",
+      "role_family": "rationale_explanation",
+      "shared_concept_id": "rationale_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "explanation",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "70.0": {
+      "name": "code_signature",
+      "type": "text",
+      "description": "Key code pattern or function signature. Examples: 'def func(d, prefix=\"\"): yield from ...', 'lambda x: x.get(\"key\", default)', '[x for x in items if cond]'",
+      "role_family": "label_or_outcome",
+      "shared_concept_id": "label_anchor",
+      "value_cardinality": "single",
+      "graph_role": "label",
+      "temporal_role": "none",
+      "query_time_only": false
+    }
+  },
+  "error": "must be called with a dataclass type or instance"
+}

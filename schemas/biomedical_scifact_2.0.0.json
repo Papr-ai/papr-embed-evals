@@ -1,0 +1,163 @@
+{
+  "schema_key": "biomedical:scifact:2.0.0",
+  "dataset": "allenai/scifact",
+  "subset": "claims",
+  "split": "train",
+  "created_at": "2026-04-09T04:31:08.296507Z",
+  "frequencies": {
+    "0.1": {
+      "name": "mega_domain",
+      "type": "text",
+      "description": "Highest-level research domain",
+      "role_family": "domain_prior",
+      "shared_concept_id": "domain_anchor",
+      "value_cardinality": "single",
+      "graph_role": "domain",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "0.5": {
+      "name": "domain",
+      "type": "text",
+      "description": "Primary research domain",
+      "role_family": "entity_or_task_type",
+      "shared_concept_id": "claim_type",
+      "value_cardinality": "single",
+      "graph_role": "node_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "2.0": {
+      "name": "subdomain",
+      "type": "text",
+      "description": "Research specialty",
+      "role_family": "relation_structure",
+      "shared_concept_id": "relation_anchor",
+      "value_cardinality": "single",
+      "graph_role": "edge_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "4.0": {
+      "name": "entity_type",
+      "type": "text",
+      "description": "Type(s) of entities in the claim (taxonomy-aware). Extract up to 3 types if multiple entity categories present. Values: Gene, Protein, Drug, Disease, Pathway, Cell, Tissue, Receptor, Enzyme, Virus, Bacteria, Hormone, Metabolite, RNA, DNA, Process. Example: 'Gene, Protein' for 'p53 protein encoded by TP53 gene'",
+      "role_family": "attribute_focus",
+      "shared_concept_id": "attribute_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "node_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "6.0": {
+      "name": "causal_agent",
+      "type": "text",
+      "description": "Entity/entities PERFORMING the action (the cause/intervention). Extract up to 3 key entities. Examples: 'Statins', 'MDA5', 'SIRT1, FOXO3, ROS'",
+      "role_family": "context_frame",
+      "shared_concept_id": "context_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "context",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "10.0": {
+      "name": "causal_target",
+      "type": "text",
+      "description": "Entity/entities BEING AFFECTED by the action (the target/patient). Extract up to 3 key targets. Examples: 'cholesterol', 'RNA_virus', 'stem_cells, nanotechnology'",
+      "role_family": "main_content",
+      "shared_concept_id": "claim_like_content",
+      "value_cardinality": "single",
+      "graph_role": "primary_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "12.0": {
+      "name": "causal_verb",
+      "type": "text",
+      "description": "Causal verbs describing the relationship. Extract BOTH hypothesis AND findings if present. Values: increases, decreases, causes, prevents, binds, activates, inhibits, regulates, associated_with, not_associated_with. Example: 'decreases_risk_of, not_associated_with' (hypothesis + null finding)",
+      "role_family": "evidence_support",
+      "shared_concept_id": "supporting_evidence",
+      "value_cardinality": "multi",
+      "graph_role": "supporting_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "18.0": {
+      "name": "effect_outcome",
+      "type": "text",
+      "description": "The downstream effect or outcome of the causal relationship. Be specific about what happens as a result. Examples: 'reduced_disease_risk', 'immune_response_activation', 'cell_death'",
+      "role_family": "source_role",
+      "shared_concept_id": "source_anchor",
+      "value_cardinality": "single",
+      "graph_role": "source",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "19.0": {
+      "name": "finding_type",
+      "type": "text",
+      "description": "Type of finding in the document (intrinsic to document, not query-dependent). positive_finding = confirms hypothesis, negative_finding = contradicts hypothesis, null_finding = no significant effect found",
+      "role_family": "target_role",
+      "shared_concept_id": "target_anchor",
+      "value_cardinality": "single",
+      "graph_role": "target",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "24.0": {
+      "name": "causal_position",
+      "type": "text",
+      "description": "Position in the causal chain (A\u2192B\u2192C). Enables chain detection: intervention\u2192mechanism\u2192outcome",
+      "role_family": "property_or_named_relation",
+      "shared_concept_id": "property_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "edge_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "30.0": {
+      "name": "sample_size",
+      "type": "text",
+      "description": "Number of subjects/samples (proxy for confidence level)",
+      "role_family": "identifier",
+      "shared_concept_id": "identifier_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "identifier",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "40.0": {
+      "name": "organism",
+      "type": "text",
+      "description": "Organism or model system",
+      "role_family": "local_detail",
+      "shared_concept_id": "detail_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "detail",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "50.0": {
+      "name": "evidence_type",
+      "type": "text",
+      "description": "Type of evidence supporting the claim",
+      "role_family": "rationale_explanation",
+      "shared_concept_id": "rationale_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "explanation",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "70.0": {
+      "name": "key_claim",
+      "type": "text",
+      "description": "Full semantic summary of the main claim (5-15 words)",
+      "role_family": "label_or_outcome",
+      "shared_concept_id": "label_anchor",
+      "value_cardinality": "single",
+      "graph_role": "label",
+      "temporal_role": "none",
+      "query_time_only": false
+    }
+  }
+}

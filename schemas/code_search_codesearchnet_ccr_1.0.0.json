@@ -1,0 +1,163 @@
+{
+  "schema_key": "code_search:codesearchnet_ccr:1.0.0",
+  "dataset": "CoIR-Retrieval/CodeSearchNet-ccr",
+  "subset": "corpus",
+  "split": null,
+  "created_at": "2026-06-18T21:05:00.000000Z",
+  "frequencies": {
+    "0.1": {
+      "name": "code_context_retrieval",
+      "type": "text",
+      "description": "Code-to-code retrieval domain prior: match a code snippet/context to the most relevant related source code.",
+      "role_family": "domain_prior",
+      "shared_concept_id": "domain_anchor",
+      "value_cardinality": "single",
+      "graph_role": "domain",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "0.5": {
+      "name": "code_artifact_type",
+      "type": "text",
+      "description": "Type of code unit being matched, such as a function, method, class, or code block.",
+      "role_family": "entity_or_task_type",
+      "shared_concept_id": "artifact_type",
+      "value_cardinality": "single",
+      "graph_role": "node_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "2.0": {
+      "name": "control_data_flow",
+      "type": "text",
+      "description": "Core control- and data-flow structure shared between the query code and the relevant candidate code.",
+      "role_family": "relation_structure",
+      "shared_concept_id": "relation_anchor",
+      "value_cardinality": "single",
+      "graph_role": "edge_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "4.0": {
+      "name": "signature_attribute",
+      "type": "text",
+      "description": "Discriminative signature attributes: argument list, types, and return shape characterizing the code unit.",
+      "role_family": "attribute_focus",
+      "shared_concept_id": "attribute_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "node_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "6.0": {
+      "name": "module_context",
+      "type": "text",
+      "description": "Surrounding module/class context and imports needed to interpret the code's role.",
+      "role_family": "context_frame",
+      "shared_concept_id": "context_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "context",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "10.0": {
+      "name": "query_code_context",
+      "type": "text",
+      "description": "The query code snippet/context whose most relevant related code must be retrieved; the main content axis.",
+      "role_family": "main_content",
+      "shared_concept_id": "task_description",
+      "value_cardinality": "single",
+      "graph_role": "primary_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "12.0": {
+      "name": "candidate_code",
+      "type": "text",
+      "description": "Candidate related code unit being matched against the query code; the retrieval evidence.",
+      "role_family": "evidence_support",
+      "shared_concept_id": "supporting_evidence",
+      "value_cardinality": "multi",
+      "graph_role": "supporting_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "18.0": {
+      "name": "input_parameters",
+      "type": "text",
+      "description": "Input parameters/arguments consumed by the code unit.",
+      "role_family": "source_role",
+      "shared_concept_id": "source_anchor",
+      "value_cardinality": "single",
+      "graph_role": "source",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "19.0": {
+      "name": "return_value",
+      "type": "text",
+      "description": "Return value or output produced by the code unit.",
+      "role_family": "target_role",
+      "shared_concept_id": "target_anchor",
+      "value_cardinality": "single",
+      "graph_role": "target",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "24.0": {
+      "name": "api_call",
+      "type": "text",
+      "description": "Named API calls, library functions, or operations invoked in the code body.",
+      "role_family": "property_or_named_relation",
+      "shared_concept_id": "named_operation",
+      "value_cardinality": "multi",
+      "graph_role": "edge_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "30.0": {
+      "name": "function_and_identifier_names",
+      "type": "text",
+      "description": "Function name plus variable/identifier names; the discriminative signal that separates structurally-similar code.",
+      "role_family": "identifier",
+      "shared_concept_id": "identifier_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "identifier",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "40.0": {
+      "name": "code_body_tokens",
+      "type": "text",
+      "description": "High-detail implementation tokens of the code body: operators, literals, and statement-level specifics.",
+      "role_family": "local_detail",
+      "shared_concept_id": "detail_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "detail",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "50.0": {
+      "name": "behavioral_equivalence_rationale",
+      "type": "text",
+      "description": "Reasoning that maps the query code's behavior to the relevant candidate code (shared purpose, equivalent logic).",
+      "role_family": "rationale_explanation",
+      "shared_concept_id": "rationale_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "explanation",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "70.0": {
+      "name": "language_label",
+      "type": "text",
+      "description": "Programming language or task category of the code artifact, such as Python, Java, Go, or PHP.",
+      "role_family": "label_or_outcome",
+      "shared_concept_id": "label_anchor",
+      "value_cardinality": "single",
+      "graph_role": "label",
+      "temporal_role": "none",
+      "query_time_only": false
+    }
+  }
+}

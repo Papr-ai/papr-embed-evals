@@ -1,0 +1,163 @@
+{
+  "schema_key": "code_search:codetrans_contest:1.0.0",
+  "dataset": "CoIR-Retrieval/codetrans-contest",
+  "subset": "corpus",
+  "split": null,
+  "created_at": "2026-06-19T02:40:31.391757Z",
+  "frequencies": {
+    "0.1": {
+      "name": "code_translation",
+      "type": "text",
+      "description": "Cross-language code-translation domain prior over equivalent program implementations.",
+      "role_family": "domain_prior",
+      "shared_concept_id": "domain_anchor",
+      "value_cardinality": "single",
+      "graph_role": "domain",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "0.5": {
+      "name": "program_type",
+      "type": "text",
+      "description": "Type of program or algorithm being translated across languages.",
+      "role_family": "entity_or_task_type",
+      "shared_concept_id": "artifact_type",
+      "value_cardinality": "single",
+      "graph_role": "node_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "2.0": {
+      "name": "equivalence_relation",
+      "type": "text",
+      "description": "Semantic-equivalence relation linking source- and target-language implementations.",
+      "role_family": "relation_structure",
+      "shared_concept_id": "relation_anchor",
+      "value_cardinality": "single",
+      "graph_role": "edge_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "4.0": {
+      "name": "algorithmic_attribute",
+      "type": "text",
+      "description": "Algorithmic behavior and I/O contract that must be preserved across languages.",
+      "role_family": "attribute_focus",
+      "shared_concept_id": "attribute_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "node_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "6.0": {
+      "name": "program_context",
+      "type": "text",
+      "description": "Surrounding program structure and dependencies needed to interpret the code.",
+      "role_family": "context_frame",
+      "shared_concept_id": "context_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "context",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "10.0": {
+      "name": "source_program",
+      "type": "text",
+      "description": "Primary source-language program serving as the query for an equivalent implementation.",
+      "role_family": "main_content",
+      "shared_concept_id": "task_description",
+      "value_cardinality": "single",
+      "graph_role": "primary_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "12.0": {
+      "name": "target_program",
+      "type": "text",
+      "description": "Equivalent program in the target language; the retrieval target.",
+      "role_family": "evidence_support",
+      "shared_concept_id": "supporting_evidence",
+      "value_cardinality": "multi",
+      "graph_role": "supporting_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "18.0": {
+      "name": "source_language_code",
+      "type": "text",
+      "description": "Source-language code and its constructs.",
+      "role_family": "source_role",
+      "shared_concept_id": "source_anchor",
+      "value_cardinality": "single",
+      "graph_role": "source",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "19.0": {
+      "name": "target_language_code",
+      "type": "text",
+      "description": "Target-language code and its constructs.",
+      "role_family": "target_role",
+      "shared_concept_id": "target_anchor",
+      "value_cardinality": "single",
+      "graph_role": "target",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "24.0": {
+      "name": "library_or_construct",
+      "type": "text",
+      "description": "Named language construct, library, or operation that must map across languages.",
+      "role_family": "property_or_named_relation",
+      "shared_concept_id": "named_operation",
+      "value_cardinality": "multi",
+      "graph_role": "edge_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "30.0": {
+      "name": "function_and_identifier_names",
+      "type": "text",
+      "description": "Function and variable identifiers; disambiguates programs with identical logic but different naming.",
+      "role_family": "identifier",
+      "shared_concept_id": "identifier_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "identifier",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "40.0": {
+      "name": "implementation_detail",
+      "type": "text",
+      "description": "Statement-level implementation tokens of the program.",
+      "role_family": "local_detail",
+      "shared_concept_id": "detail_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "detail",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "50.0": {
+      "name": "translation_rationale",
+      "type": "text",
+      "description": "Reasoning mapping source constructs to equivalent target-language constructs.",
+      "role_family": "rationale_explanation",
+      "shared_concept_id": "rationale_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "explanation",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "70.0": {
+      "name": "language_label",
+      "type": "text",
+      "description": "Programming language of the implementation (source or target).",
+      "role_family": "label_or_outcome",
+      "shared_concept_id": "label_anchor",
+      "value_cardinality": "single",
+      "graph_role": "label",
+      "temporal_role": "none",
+      "query_time_only": false
+    }
+  }
+}

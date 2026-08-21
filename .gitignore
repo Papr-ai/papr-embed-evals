@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+results/**/model_meta.json
+.DS_Store

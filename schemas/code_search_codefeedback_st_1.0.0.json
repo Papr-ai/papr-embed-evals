@@ -1,0 +1,163 @@
+{
+  "schema_key": "code_search:codefeedback_st:1.0.0",
+  "dataset": "CoIR-Retrieval/codefeedback-st",
+  "subset": "corpus",
+  "split": null,
+  "created_at": "2026-06-19T02:40:31.391104Z",
+  "frequencies": {
+    "0.1": {
+      "name": "code_assistance",
+      "type": "text",
+      "description": "Single-turn code-assistance domain prior over coding questions and assistant responses.",
+      "role_family": "domain_prior",
+      "shared_concept_id": "domain_anchor",
+      "value_cardinality": "single",
+      "graph_role": "domain",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "0.5": {
+      "name": "request_type",
+      "type": "text",
+      "description": "Type of coding request such as implementation, debugging, explanation, or optimization.",
+      "role_family": "entity_or_task_type",
+      "shared_concept_id": "artifact_type",
+      "value_cardinality": "single",
+      "graph_role": "node_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "2.0": {
+      "name": "question_answer_relation",
+      "type": "text",
+      "description": "Solution structure linking the coding question to its answer.",
+      "role_family": "relation_structure",
+      "shared_concept_id": "relation_anchor",
+      "value_cardinality": "single",
+      "graph_role": "edge_type",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "4.0": {
+      "name": "requirement_attribute",
+      "type": "text",
+      "description": "Key requirements or constraints specified in the request.",
+      "role_family": "attribute_focus",
+      "shared_concept_id": "attribute_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "node_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "6.0": {
+      "name": "code_context",
+      "type": "text",
+      "description": "Surrounding code, environment, or library context provided with the request.",
+      "role_family": "context_frame",
+      "shared_concept_id": "context_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "context",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "10.0": {
+      "name": "coding_question",
+      "type": "text",
+      "description": "Primary natural-language coding question or instruction.",
+      "role_family": "main_content",
+      "shared_concept_id": "task_description",
+      "value_cardinality": "single",
+      "graph_role": "primary_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "12.0": {
+      "name": "assistant_response",
+      "type": "text",
+      "description": "Assistant response containing explanation and code that answers the request.",
+      "role_family": "evidence_support",
+      "shared_concept_id": "supporting_evidence",
+      "value_cardinality": "multi",
+      "graph_role": "supporting_node",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "18.0": {
+      "name": "input_or_error",
+      "type": "text",
+      "description": "Provided input, code, or error message the request is about.",
+      "role_family": "source_role",
+      "shared_concept_id": "source_anchor",
+      "value_cardinality": "single",
+      "graph_role": "source",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "19.0": {
+      "name": "desired_outcome",
+      "type": "text",
+      "description": "Desired behavior or result the user wants.",
+      "role_family": "target_role",
+      "shared_concept_id": "target_anchor",
+      "value_cardinality": "single",
+      "graph_role": "target",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "24.0": {
+      "name": "api_or_method",
+      "type": "text",
+      "description": "Named API, function, or method central to the answer.",
+      "role_family": "property_or_named_relation",
+      "shared_concept_id": "named_operation",
+      "value_cardinality": "multi",
+      "graph_role": "edge_attribute",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "30.0": {
+      "name": "code_identifiers",
+      "type": "text",
+      "description": "Identifiers and symbols in the answer code; disambiguates similar responses.",
+      "role_family": "identifier",
+      "shared_concept_id": "identifier_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "identifier",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "40.0": {
+      "name": "code_implementation",
+      "type": "text",
+      "description": "High-detail implementation tokens of the answer code.",
+      "role_family": "local_detail",
+      "shared_concept_id": "detail_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "detail",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "50.0": {
+      "name": "explanation_rationale",
+      "type": "text",
+      "description": "Explanatory reasoning that justifies the proposed solution.",
+      "role_family": "rationale_explanation",
+      "shared_concept_id": "rationale_anchor",
+      "value_cardinality": "multi",
+      "graph_role": "explanation",
+      "temporal_role": "none",
+      "query_time_only": false
+    },
+    "70.0": {
+      "name": "language_label",
+      "type": "text",
+      "description": "Programming language of the answer code.",
+      "role_family": "label_or_outcome",
+      "shared_concept_id": "label_anchor",
+      "value_cardinality": "single",
+      "graph_role": "label",
+      "temporal_role": "none",
+      "query_time_only": false
+    }
+  }
+}
