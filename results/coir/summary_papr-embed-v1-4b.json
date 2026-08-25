@@ -1,0 +1,16 @@
+[
+  {
+    "task": "StackOverflowQA",
+    "model": "papr-embed-v1-4b",
+    "ndcg_at_10": 0.93717,
+    "minutes": 327.2,
+    "api_stats": {
+      "requests": 398,
+      "inputs": 21925,
+      "reasoning_cache_hits": 0,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 32399603.8,
+      "retries": 245
+    }
+  }
+]

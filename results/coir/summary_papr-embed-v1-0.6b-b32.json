@@ -1,0 +1,16 @@
+[
+  {
+    "task": "SyntheticText2SQL",
+    "model": "papr-embed-v1-0.6b-b32",
+    "ndcg_at_10": 0.76721,
+    "minutes": 139.6,
+    "api_stats": {
+      "requests": 3492,
+      "inputs": 111702,
+      "reasoning_cache_hits": 0,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 2311190.7,
+      "retries": 1
+    }
+  }
+]
