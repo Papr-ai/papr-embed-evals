@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import os
 import random
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Iterable, Literal, Optional, Sequence
@@ -79,7 +80,9 @@ class PaprEmbeddingsClient:
         default_factory=lambda: os.getenv("PAPR_BASE_URL", "https://memory.papr.ai")
     )
     api_key: str = field(default_factory=lambda: os.getenv("PAPR_API_KEY", ""))
-    timeout_s: float = 180.0
+    timeout_s: float = field(
+        default_factory=lambda: float(os.getenv("PAPR_HTTP_TIMEOUT_S", "180"))
+    )
     max_attempts: int = 6
     stats: EmbedStats = field(default_factory=EmbedStats)
 
@@ -94,6 +97,9 @@ class PaprEmbeddingsClient:
             headers={"X-API-Key": self.api_key, "Content-Type": "application/json"},
             timeout=self.timeout_s,
         )
+        # embed() may be called from multiple threads (PAPR_EMBED_CONCURRENCY);
+        # httpx.Client is thread-safe, the stats counters are not.
+        self._stats_lock = threading.Lock()
 
     # ------------------------------------------------------------------ API
 
@@ -128,13 +134,14 @@ class PaprEmbeddingsClient:
             data = sorted(body["data"], key=lambda item: item["index"])
             vectors.extend(item["embedding"] for item in data)
 
-            self.stats.requests += 1
-            self.stats.inputs += len(batch)
             meta = body.get("meta", {})
-            self.stats.total_latency_ms += float(meta.get("latency_ms") or 0.0)
             reasoning_meta = meta.get("reasoning") or {}
-            self.stats.reasoning_cache_hits += int(reasoning_meta.get("cache_hits") or 0)
-            self.stats.reasoning_uncached += int(reasoning_meta.get("uncached") or 0)
+            with self._stats_lock:
+                self.stats.requests += 1
+                self.stats.inputs += len(batch)
+                self.stats.total_latency_ms += float(meta.get("latency_ms") or 0.0)
+                self.stats.reasoning_cache_hits += int(reasoning_meta.get("cache_hits") or 0)
+                self.stats.reasoning_uncached += int(reasoning_meta.get("uncached") or 0)
 
         return np.asarray(vectors, dtype=np.float32)
 
@@ -158,7 +165,8 @@ class PaprEmbeddingsClient:
                 last_error = f"HTTP {response.status_code}: {response.text[:200]}"
 
             if attempt < self.max_attempts:
-                self.stats.retries += 1
+                with self._stats_lock:
+                    self.stats.retries += 1
                 # Exponential backoff with jitter; reasoning + cold GPU paths
                 # legitimately return 503 while replicas warm.
                 delay = min(60.0, (2.0**attempt) + random.uniform(0.0, 1.0))

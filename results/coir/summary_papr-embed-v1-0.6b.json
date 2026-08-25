@@ -1,0 +1,16 @@
+[
+  {
+    "task": "CodeFeedbackMT",
+    "model": "papr-embed-v1-0.6b",
+    "ndcg_at_10": 0.87899,
+    "minutes": 181.8,
+    "api_stats": {
+      "requests": 2565,
+      "inputs": 79660,
+      "reasoning_cache_hits": 0,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 7001496.7,
+      "retries": 0
+    }
+  }
+]

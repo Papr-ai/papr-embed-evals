@@ -3,4 +3,9 @@ __pycache__/
 *.pyc
 .env
 results/**/model_meta.json
+# Raw export-vector dumps (DUMP_VECS=1). Hundreds of MB per run and
+# reproducible from the score JSONs plus the launcher, so only the scores are
+# tracked.
+results/**/*.npz
+logs/
 .DS_Store

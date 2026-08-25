@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "plain",
+    "model": "papr-embed-v1-4b-b32",
+    "ndcg_at_10": 0.78777,
+    "minutes": 100.8,
+    "api_stats": {
+      "requests": 172,
+      "inputs": 5483,
+      "reasoning_cache_hits": 0,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 17676968.3,
+      "retries": 1
+    }
+  },
+  {
+    "variant": "reasoning",
+    "model": "papr-embed-v1-4b-reasoning-frontier-max-b32",
+    "ndcg_at_10": 0.78306,
+    "minutes": 6.3,
+    "api_stats": {
+      "requests": 172,
+      "inputs": 5483,
+      "reasoning_cache_hits": 5481,
+      "reasoning_uncached": 2,
+      "total_latency_ms": 853068.4,
+      "retries": 0
+    }
+  }
+]

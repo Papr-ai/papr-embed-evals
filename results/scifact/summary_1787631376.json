@@ -1,0 +1,16 @@
+[
+  {
+    "variant": "reasoning",
+    "model": "papr-embed-v1-4b-reasoning-frontier-max-b32",
+    "ndcg_at_10": 0.78326,
+    "minutes": 8.7,
+    "api_stats": {
+      "requests": 172,
+      "inputs": 5483,
+      "reasoning_cache_hits": 5483,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 759156.2,
+      "retries": 0
+    }
+  }
+]
