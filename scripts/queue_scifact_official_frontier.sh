@@ -36,6 +36,12 @@ MEM=/home/shawkatkabbara/memory
 # the existing 0.6b dump path unchanged.
 MODEL="${MODEL:-papr-embed-v1-0.6b}"
 SLUG=$(printf '%s' "$MODEL" | sed 's/^papr-embed-v1-//; s/\./p/g')
+# A schema override must partition the log and dump paths the same way it
+# partitions the result name: a v3.1 dump landing in the v2.0 directory would
+# silently destroy the baseline it exists to be compared against.
+if [ -n "${SCHEMA_ID:-}" ]; then
+  SLUG="${SLUG}_s$(printf '%s' "$SCHEMA_ID" | awk -F: '{print $NF}' | sed 's/\./p/g')"
+fi
 LOG=$EVALS/logs/scifact_official_frontier_max_${SLUG}.log
 DUMP=$EVALS/results/scifact/vecs_${SLUG}_frontier_max
 # Deliberately NOT per-model: both models are served by the same single L4 GPU,
@@ -63,6 +69,7 @@ export PAPR_BASE_URL="${PAPR_BASE_URL:-https://memory.papr.ai}"
 export PYTHONUNBUFFERED=1
 
 export MODEL
+export SCHEMA_ID="${SCHEMA_ID:-}"
 export TIER="${TIER:-frontier}"
 export EFFORT="${EFFORT:-max}"
 export QUERIES_ONLY="${QUERIES_ONLY:-0}"   # 0 = teacher on BOTH sides
@@ -86,7 +93,7 @@ export TRANSFORMERS_OFFLINE=1
 exec >>"$LOG" 2>&1
 echo "=================================================================="
 echo "[$(date -u +%F' '%T)] official SciFact start pid=$$ variant=$VARIANT"
-echo "  model=$MODEL reasoning=$TIER/$EFFORT both_sides=$((1 - QUERIES_ONLY))"
+echo "  model=$MODEL schema=${SCHEMA_ID:-registry-default} reasoning=$TIER/$EFFORT both_sides=$((1 - QUERIES_ONLY))"
 echo "  batch=$BATCH concurrency=$PAPR_EMBED_CONCURRENCY timeout=${PAPR_HTTP_TIMEOUT_S}s"
 set +e
 "$MEM/.venv/bin/python" -u scripts/run_scifact.py "$VARIANT"

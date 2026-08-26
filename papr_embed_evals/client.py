@@ -21,6 +21,7 @@ Server-side facts this client encodes:
 
 from __future__ import annotations
 
+import logging
 import os
 import random
 import threading
@@ -30,6 +31,8 @@ from typing import Iterable, Literal, Optional, Sequence
 
 import httpx
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 MAX_BATCH_SIZE = 64
 MAX_INPUT_CHARS = 100_000
@@ -62,6 +65,16 @@ class EmbedStats:
     reasoning_uncached: int = 0
     total_latency_ms: float = 0.0
     retries: int = 0
+    # A reasoning run can succeed on every request and still be scored on
+    # degraded vectors: `bands_dropped` counts band values the teacher extracted
+    # but whose embedding never landed, which downstream is indistinguishable
+    # from a band the teacher left empty. The API has always returned this, on
+    # cache hits as well as misses, and this client used to discard it -- so the
+    # 2026-08-26 official SciFact run reported it on all ~5.5k requests and the
+    # gap was only found by auditing the cache by hand afterwards. Any nonzero
+    # total means the run's NDCG is not a clean measurement of the teacher.
+    bands_dropped: int = 0
+    bands_repaired: int = 0
 
     def as_dict(self) -> dict:
         return {
@@ -71,6 +84,8 @@ class EmbedStats:
             "reasoning_uncached": self.reasoning_uncached,
             "total_latency_ms": round(self.total_latency_ms, 1),
             "retries": self.retries,
+            "bands_dropped": self.bands_dropped,
+            "bands_repaired": self.bands_repaired,
         }
 
 
@@ -136,12 +151,26 @@ class PaprEmbeddingsClient:
 
             meta = body.get("meta", {})
             reasoning_meta = meta.get("reasoning") or {}
+            dropped = int(reasoning_meta.get("bands_dropped") or 0)
             with self._stats_lock:
                 self.stats.requests += 1
                 self.stats.inputs += len(batch)
                 self.stats.total_latency_ms += float(meta.get("latency_ms") or 0.0)
                 self.stats.reasoning_cache_hits += int(reasoning_meta.get("cache_hits") or 0)
                 self.stats.reasoning_uncached += int(reasoning_meta.get("uncached") or 0)
+                self.stats.bands_dropped += dropped
+                self.stats.bands_repaired += int(reasoning_meta.get("bands_repaired") or 0)
+                first_drop = dropped and self.stats.bands_dropped == dropped
+            if first_drop:
+                # Warn once, loudly, at the first occurrence: this is the point
+                # at which the run stops being a clean measurement, and finding
+                # that out at the end of a multi-hour corpus pass is too late.
+                logger.warning(
+                    "[papr-api] %d band value(s) had no embedding on this request "
+                    "-- vectors are DEGRADED and this run's scores will understate "
+                    "the teacher. Continuing; see EmbedStats.bands_dropped.",
+                    dropped,
+                )
 
         return np.asarray(vectors, dtype=np.float32)
 
