@@ -14,6 +14,14 @@ re-runs only pay for embedding.
 
 Variant knobs (all optional):
     MODEL=papr-embed-v1-4b        override the default pinned-schema 0.6b model
+    SCHEMA_ID=biomedical:scifact:3.1.0   override the registry schema. Requires a
+                                  schema-aware MODEL (the pinned scifact model
+                                  ignores caller schema ids); results and dumps
+                                  gain a -s<version> suffix so schema versions
+                                  never overwrite each other. The server's
+                                  teacher cache keys on (content, schema, tier,
+                                  effort), so a new schema re-extracts once and
+                                  is cached for every later run.
     TIER=swift EFFORT=medium      reasoning tier/effort (default swift/medium)
     QUERIES_ONLY=1                restrict the teacher to queries (the cheap
                                   asymmetric shape; default is BOTH sides)
@@ -24,6 +32,7 @@ Variant knobs (all optional):
 
 from __future__ import annotations
 
+import dataclasses
 import json
 import logging
 import os
@@ -61,6 +70,17 @@ def run_variant(variant: str) -> dict:
         reasoning=reasoning,
         reasoning_queries_only=queries_only,
     )
+    schema_id = os.getenv("SCHEMA_ID")
+    if schema_id:
+        if model.model_id.endswith("-scifact"):
+            raise SystemExit(
+                f"SCHEMA_ID={schema_id} needs a schema-aware MODEL "
+                f"(e.g. papr-embed-v1-0.6b); {model.model_id} pins its schema "
+                "server-side and would silently serve the pinned version."
+            )
+        model.spec = dataclasses.replace(model.spec, schema_id=schema_id)
+        version = schema_id.rsplit(":", 1)[-1].replace(".", "p")
+        model.model_name = f"{model.model_name}-s{version}"
     if batch != 64:
         model.model_name = f"{model.model_name}-b{batch}"
 
