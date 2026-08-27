@@ -1,0 +1,34 @@
+[
+  {
+    "variant": "plain",
+    "model": "papr-embed-v1-0.6b-scifact-b8",
+    "ndcg_at_10": 0.7299,
+    "minutes": 5.5,
+    "api_stats": {
+      "requests": 686,
+      "inputs": 5483,
+      "reasoning_cache_hits": 0,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 760948.9,
+      "retries": 2,
+      "bands_dropped": 0,
+      "bands_repaired": 0
+    }
+  },
+  {
+    "variant": "reasoning",
+    "model": "papr-embed-v1-0.6b-scifact-reasoning-frontier-max-b8",
+    "ndcg_at_10": 0.73147,
+    "minutes": 4.1,
+    "api_stats": {
+      "requests": 686,
+      "inputs": 5483,
+      "reasoning_cache_hits": 5483,
+      "reasoning_uncached": 0,
+      "total_latency_ms": 1019007.8,
+      "retries": 2,
+      "bands_dropped": 0,
+      "bands_repaired": 0
+    }
+  }
+]

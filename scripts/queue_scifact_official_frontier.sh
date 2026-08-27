@@ -27,8 +27,13 @@
 set -uo pipefail
 
 VARIANT="${1:-both}"
-EVALS=/home/shawkatkabbara/papr-embed-evals
-MEM=/home/shawkatkabbara/memory
+# Repo root, derived from this script's own location so the launcher works from
+# any checkout. PAPR_EVALS_HOME overrides it if you keep results elsewhere.
+EVALS="${PAPR_EVALS_HOME:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+# Optional: a sibling checkout to source credentials and a venv from. External
+# users do not have this -- they export PAPR_API_KEY and use their own python,
+# both of which are handled below.
+MEM="${PAPR_MEMORY_HOME:-}"
 
 # Resolve MODEL before the paths: the dump feeds the offline (p_m, p_e) mass
 # surface, so a 4b run writing to the 0.6b directory would silently destroy the
@@ -59,12 +64,23 @@ if ! flock -n 9; then
   exit 1
 fi
 
-set -a
-# shellcheck disable=SC1091
-source "$MEM/.env"
-set +a
-
-export PAPR_API_KEY="${TEST_X_USER_API_KEY:?TEST_X_USER_API_KEY missing from $MEM/.env}"
+# Credentials. The public path is simply `export PAPR_API_KEY=<key>`; a local
+# .env is honoured too. Only when neither is present do we fall back to a
+# sibling memory checkout (internal convenience, absent for external users).
+if [ -z "${PAPR_API_KEY:-}" ] && [ -f "$EVALS/.env" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "$EVALS/.env"
+  set +a
+fi
+if [ -z "${PAPR_API_KEY:-}" ] && [ -n "$MEM" ] && [ -f "$MEM/.env" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "$MEM/.env"
+  set +a
+  PAPR_API_KEY="${TEST_X_USER_API_KEY:-}"
+fi
+export PAPR_API_KEY="${PAPR_API_KEY:?set PAPR_API_KEY (get one at https://dashboard.papr.ai -> Settings -> API Keys)}"
 export PAPR_BASE_URL="${PAPR_BASE_URL:-https://memory.papr.ai}"
 export PYTHONUNBUFFERED=1
 
@@ -86,17 +102,32 @@ export PAPR_HTTP_TIMEOUT_S="${PAPR_HTTP_TIMEOUT_S:-650}"
 # mass calibration never needs a second paid pass.
 export PAPR_DUMP_DIR="$DUMP"
 
-export HF_HUB_OFFLINE=1
-export HF_DATASETS_OFFLINE=1
-export TRANSFORMERS_OFFLINE=1
+# Default ONLINE so a fresh checkout can pull the SciFact dataset from the Hub.
+# Forcing offline here (which we did while iterating on a warm cache) makes the
+# very first run fail for anyone who has not already downloaded it. Set
+# HF_OFFLINE=1 to pin a warm cache and guarantee the dataset revision.
+if [ "${HF_OFFLINE:-0}" = "1" ]; then
+  export HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+fi
+
+# Interpreter: an explicit PYTHON wins, else the repo venv, else PATH.
+PYTHON="${PYTHON:-}"
+if [ -z "$PYTHON" ] && [ -x "$EVALS/.venv/bin/python" ]; then
+  PYTHON="$EVALS/.venv/bin/python"
+fi
+if [ -z "$PYTHON" ] && [ -n "$MEM" ] && [ -x "$MEM/.venv/bin/python" ]; then
+  PYTHON="$MEM/.venv/bin/python"
+fi
+PYTHON="${PYTHON:-python3}"
 
 exec >>"$LOG" 2>&1
 echo "=================================================================="
 echo "[$(date -u +%F' '%T)] official SciFact start pid=$$ variant=$VARIANT"
 echo "  model=$MODEL schema=${SCHEMA_ID:-registry-default} reasoning=$TIER/$EFFORT both_sides=$((1 - QUERIES_ONLY))"
 echo "  batch=$BATCH concurrency=$PAPR_EMBED_CONCURRENCY timeout=${PAPR_HTTP_TIMEOUT_S}s"
+echo "  python=$PYTHON hf_offline=${HF_OFFLINE:-0} repo=$EVALS"
 set +e
-"$MEM/.venv/bin/python" -u scripts/run_scifact.py "$VARIANT"
+"$PYTHON" -u scripts/run_scifact.py "$VARIANT"
 rc=$?
 echo "[$(date -u +%F' '%T)] done rc=$rc"
 exit "$rc"

@@ -31,28 +31,70 @@ from .tasks import TASKS
 logger = logging.getLogger(__name__)
 
 
-def _build_model_meta(model_name: str, embed_dim: int | None):
-    """Minimal honest ModelMeta: the API is closed-weights, instruction-using."""
+# Every MTEB-registered task whose TRAIN split is in the papr-embed-v1 training
+# mix. MTEB requires this declared: the leaderboard marks a model as trained on a
+# task it has seen, and reviewers explicitly check submissions for train-split
+# leakage. Omitting it is the difference between a permitted in-domain result and
+# an undisclosed one.
+#
+# The mix is 9 schemas (scifact, nfcorpus, conala, staqc, nq, hotpotqa, casehold,
+# fever, fiqa). Six map onto MTEB task names and are declared below. The other
+# three have no MTEB task to name: conala and staqc are code-retrieval sets we
+# build ourselves, and casehold is a LegalBench holding task, not an MTEB
+# retrieval task. CosQA was dropped from the mix as contaminated and no CoIR
+# dataset is trained on -- CoIR is the sealed reporting axis.
+# mteb 2.10 types this as set[str] | None -- task names only, the train split is
+# implied (a benchmark never trains on its own test split).
+PAPR_EMBED_V1_TRAINING_DATASETS: set[str] = {
+    "SciFact",
+    "NFCorpus",
+    "NQ",
+    "HotpotQA",
+    "FEVER",
+    "FiQA2018",
+}
+
+# Trunk parameter counts. The heads add ~28M on top of a FROZEN base encoder, so
+# the honest "size" of the served model is trunk + heads.
+_N_PARAMETERS = {"4b": 4_020_000_000, "0.6b": 628_000_000}
+
+# Export width per tower, measured at load on the serving box (see
+# services/embedding_models.py): base slice + band/evidence tail. The 4B is
+# 2560 + 2944 = 5504, NOT 4096-based -- a hardcoded 6656 here shipped in earlier
+# result JSONs and was wrong.
+_EMBED_DIM = {"4b": 5504, "0.6b": 3968}
+
+
+def _tower(model_id: str) -> str:
+    return "4b" if "4b" in model_id else "0.6b"
+
+
+def _build_model_meta(model_name: str, embed_dim: int | None, *, model_id: str = ""):
+    """Honest ModelMeta: closed-weights API, instruction-using, train mix declared."""
     from mteb.models.model_meta import ModelMeta
 
+    tower = _tower(model_id or model_name)
     return ModelMeta(
         loader=None,
         name=f"papr/{model_name}",
         revision="api",
         release_date="2026-08-20",
         languages=["eng-Latn"],
-        n_parameters=None,
+        n_parameters=_N_PARAMETERS.get(tower),
         memory_usage_mb=None,
         max_tokens=2048,
         embed_dim=embed_dim,
         license=None,
         open_weights=False,
+        # The eval harness is public and reproduces every number end to end; the
+        # training code and data are not public.
         public_training_code=None,
         public_training_data=None,
         framework=["API"],
+        reference="https://github.com/Papr-ai/papr-embed-evals",
         similarity_fn_name="cosine",
         use_instructions=True,
-        training_datasets=None,
+        training_datasets=PAPR_EMBED_V1_TRAINING_DATASETS,
     )
 
 
@@ -102,7 +144,8 @@ class PaprEmbedAPIModel:
         # MTEB reads this for result metadata (name/revision in the output).
         self.mteb_model_meta = _build_model_meta(
             self.model_name,
-            embed_dim=6656 if "4b" in self.model_id else 3968,
+            embed_dim=_EMBED_DIM[_tower(self.model_id)],
+            model_id=self.model_id,
         )
 
     # MTEB 2.10 encoder interface -------------------------------------------

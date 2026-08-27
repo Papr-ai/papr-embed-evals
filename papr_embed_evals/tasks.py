@@ -56,6 +56,25 @@ TASKS: dict[str, TaskSpec] = {
         corpus_size=5_183,
         notes="Pinned schema; the model ignores caller schema_id. First target for reasoning A/B.",
     ),
+    # ------------------------------------------------------------- NFCorpus
+    "NFCorpus": TaskSpec(
+        mteb_task="NFCorpus",
+        schema_id="scientific:nfcorpus:2.0.0",
+        model=GENERAL_MODEL,
+        instruction="Given a health or nutrition question, retrieve scientific documents that answer it.",
+        prompt_winner="ours",
+        corpus_size=3_633,
+        notes=(
+            "BEIR, not CoIR. Added as the cheap validation of the band-cache "
+            "self-heal (Papr-ai/memory#118) on a FRESH cache: ~3,956 inputs on "
+            "swift/medium is ~7,912 billable units, about an eighth of SciFact "
+            "at frontier/max, and it exercises the exact path that poisoned 980 "
+            "SciFact rows. prompt_winner is the schema instruction by default -- "
+            "the prompt A/B has NOT been run here, unlike every other row in "
+            "this table. 2.0.0 is the spans-not-labels re-authoring; its text is "
+            "identical to 1.0.0 so the version bump moves only the band design."
+        ),
+    ),
     # ---------------------------------------------------------------- CoIR
     "AppsRetrieval": TaskSpec(
         mteb_task="AppsRetrieval",
@@ -150,7 +169,12 @@ TASKS: dict[str, TaskSpec] = {
     ),
 }
 
-COIR_TASKS: list[str] = [name for name in TASKS if name != "SciFact"]
+# SciFact and NFCorpus are BEIR tasks that live in this table for the reasoning
+# A/Bs; an allow-list by exclusion silently absorbs every future BEIR addition
+# into the CoIR average, so new non-CoIR entries must be named here.
+NON_COIR_TASKS: frozenset[str] = frozenset({"SciFact", "NFCorpus"})
+
+COIR_TASKS: list[str] = [name for name in TASKS if name not in NON_COIR_TASKS]
 
 # Cheapest-first ordering for CoIR, so throughput and correctness are proven
 # on small corpora before the six-figure-document tasks are committed to.
