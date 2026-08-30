@@ -128,8 +128,8 @@ results/          # eval outputs (committed for published runs)
 - [x] Task registry with measured schema + instruction provenance
 - [x] SciFact plain vs reasoning A/B — all 10 legs, production path
 - [x] `ModelMeta` with declared training data, real param counts, correct dims
-- [ ] Make this repo public (blocks the MTEB submission's reproducibility link)
+- [x] Make this repo public (blocks the MTEB submission's reproducibility link)
 - [ ] NFCorpus + CodeFeedbackMT
 - [ ] CoIR suite through the API
 - [ ] Switch transport to the `papr-memory` Python SDK once it exposes embeddings
-- [ ] MTEB submission PR to `embeddings-benchmark/results`
+- [x] MTEB submission PRs: results [#691](https://github.com/embeddings-benchmark/results/pull/691), ModelMeta [#5315](https://github.com/embeddings-benchmark/mteb/pull/5315)
