@@ -1,9 +1,32 @@
 # papr-embed-evals
 
-Retrieval evaluation (MTEB / CoIR / SciFact) for the
-[papr-embed-v1](https://memory.papr.ai) embedding model lineup, scored
-entirely through the public Papr embeddings API — no model weights needed.
-Anyone with an API key can reproduce every number in `results/`.
+Reproduce the [papr-embed](https://huggingface.co/papr-ai) retrieval results
+(MTEB / CoIR / SciFact). Two ways, matching the two model series:
+
+| Series | How you run it | Script |
+|---|---|---|
+| **papr-embed-code-1** (4B, 0.6B), open weights, Apache-2.0 | Download from [Hugging Face](https://huggingface.co/papr-ai) and run locally on a GPU. Both models are registered in `mteb`. | `scripts/run_code1.py` |
+| **papr-embed-schema-1** (4B, 0.6B), schema-conditioned | Call the [Papr embeddings API](https://platform.papr.ai) with an API key. No weights needed. | `scripts/run_scifact.py`, `scripts/run_coir.py` |
+
+## Quick start: code-1 (open weights)
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements-code1.txt
+python scripts/run_code1.py --model papr-ai/papr-embed-code-1-0.6b --tasks coir   # CoIR mean 77.19
+python scripts/run_code1.py --model papr-ai/papr-embed-code-1-4b   --tasks coir   # CoIR mean 80.13
+```
+
+The script loads the model through the entry that ships in `mteb`, so what it scores is what the
+leaderboard scores. Use `--batch 16` if a task runs out of GPU memory. Results are written in the
+standard `mteb` layout. The weights, prompts and full protocol are on the model pages:
+[4B](https://huggingface.co/papr-ai/papr-embed-code-1-4b) ·
+[0.6B](https://huggingface.co/papr-ai/papr-embed-code-1-0.6b).
+
+## Quick start: schema-1 (through the API)
+
+The rest of this README covers schema-1: `PAPR_API_KEY`, `scripts/smoke_api.py`, SciFact and CoIR runs.
+Docs and API keys: [platform.papr.ai](https://platform.papr.ai).
 
 ## Models under evaluation
 

@@ -1,0 +1,6 @@
+# papr-embed-code-1 (open weights, local GPU). The papr-ai entries are in mteb main
+# (PR #5752); use the first mteb release that includes them, or install from git.
+mteb @ git+https://github.com/embeddings-benchmark/mteb@main
+sentence-transformers>=5.2
+torch
+numpy>=1.26
