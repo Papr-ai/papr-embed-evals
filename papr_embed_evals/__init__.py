@@ -1,4 +1,4 @@
-"""papr-embed-evals: MTEB/CoIR retrieval evaluation for the papr-embed-v1 lineup.
+"""papr-embed-evals: MTEB/CoIR retrieval evaluation for the papr-embed-schema-1 lineup (formerly papr-embed-v1).
 
 Every number this package produces is scored through the public Papr
 embeddings API (https://memory.papr.ai/v1/embeddings), so anyone with an API

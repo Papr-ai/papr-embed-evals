@@ -40,7 +40,7 @@ MEM="${PAPR_MEMORY_HOME:-}"
 # baseline it is meant to be compared against. papr-embed-v1-0.6b -> 0p6b keeps
 # the existing 0.6b dump path unchanged.
 MODEL="${MODEL:-papr-embed-v1-0.6b}"
-SLUG=$(printf '%s' "$MODEL" | sed 's/^papr-embed-v1-//; s/\./p/g')
+SLUG=$(printf '%s' "$MODEL" | sed 's/^papr-embed-v1-//; s/^papr-embed-schema-1-//; s/\./p/g')
 # A schema override must partition the log and dump paths the same way it
 # partitions the result name: a v3.1 dump landing in the v2.0 directory would
 # silently destroy the baseline it exists to be compared against.
