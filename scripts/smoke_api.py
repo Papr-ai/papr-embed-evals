@@ -31,8 +31,8 @@ def main() -> int:
     )
 
     checks = [
-        ("scifact / plain", "papr-embed-v1-0.6b-scifact", None),
-        ("scifact / reasoning", "papr-embed-v1-0.6b-scifact", ReasoningOptions()),
+        ("scifact / plain", "papr-embed-schema-1-0.6b-scifact", None),
+        ("scifact / reasoning", "papr-embed-schema-1-0.6b-scifact", ReasoningOptions()),
     ]
     failures = 0
     for label, model_id, reasoning in checks:

@@ -32,10 +32,15 @@ Docs and API keys: [platform.papr.ai](https://platform.papr.ai).
 
 | model | base | what it is |
 |---|---|---|
-| `papr-embed-v1-0.6b-scifact` | Qwen3-0.6B | SciFact-specialized holographic embeddings |
-| `papr-embed-v1-0.6b` | Qwen3-0.6B | general schema-aware embeddings |
-| `papr-embed-v1-4b` | Qwen3-4B | larger base tower |
+| `papr-embed-schema-1-0.6b-scifact` | Qwen3-0.6B | SciFact-specialized holographic embeddings |
+| `papr-embed-schema-1-0.6b` | Qwen3-0.6B | general schema-aware embeddings |
+| `papr-embed-schema-1-4b` | Qwen3-4B | larger base tower |
 | `*-reasoning` | + live teacher | replaces the learned band block with request-time LLM-extracted schema bands |
+
+**Model names.** schema-1 was called `papr-embed-v1` until October 2026, and code-1 was `papr-embed-v2`.
+The API accepts both spellings forever (`papr-embed-v1-4b` and `papr-embed-schema-1-4b` are the same model) and
+echoes back the ID you sent; `GET /v1/embeddings/models` lists the new names. Result files and SciFact tables
+below keep the name the run was made under.
 
 Each model accepts `input_type` (`query` / `document`), a `schema_id`
 selecting the holographic schema (pinned for scifact), and an optional
@@ -104,13 +109,13 @@ general legs, and both headline numbers are 2.0.0.
 export PAPR_API_KEY=<your key>
 
 # 4B headline (78.777) — plain, schema 2.0.0
-MODEL=papr-embed-v1-4b BATCH=32 ./scripts/queue_scifact_official_frontier.sh plain
+MODEL=papr-embed-schema-1-4b BATCH=32 ./scripts/queue_scifact_official_frontier.sh plain
 
 # 0.6B headline (73.147) — SciFact-specialized, teacher on both sides
-MODEL=papr-embed-v1-0.6b-scifact ./scripts/queue_scifact_official_frontier.sh both
+MODEL=papr-embed-schema-1-0.6b-scifact ./scripts/queue_scifact_official_frontier.sh both
 
 # general 0.6B, schema 3.1.0 instead of the pinned default
-MODEL=papr-embed-v1-0.6b SCHEMA_ID=biomedical:scifact:3.1.0 \
+MODEL=papr-embed-schema-1-0.6b SCHEMA_ID=biomedical:scifact:3.1.0 \
   ./scripts/queue_scifact_official_frontier.sh both
 ```
 

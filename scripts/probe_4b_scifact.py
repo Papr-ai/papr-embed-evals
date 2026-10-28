@@ -8,7 +8,7 @@ about $1,333, so this proves it on two texts before the full run commits.
 
 Three checks, cheapest first:
 
-  1. /models reports papr-embed-v1-4b live, and its advertised dimension.
+  1. /models reports papr-embed-schema-1-4b live, and its advertised dimension.
   2. One real SciFact document + one real test query embed PLAIN on the 4b.
      Confirms the hybrid path (remote Qwen3-4B base tower + local band/evidence
      heads) answers at all, and measures the ACTUAL shipped block masses from
@@ -41,7 +41,7 @@ sys.path.insert(0, ".")
 
 from papr_embed_evals.client import PaprEmbeddingsClient  # noqa: E402
 
-MODEL = os.getenv("MODEL", "papr-embed-v1-4b")
+MODEL = os.getenv("MODEL", "papr-embed-schema-1-4b")
 SCHEMA = "biomedical:scifact:2.0.0"
 TIER = os.getenv("TIER", "frontier")
 EFFORT = os.getenv("EFFORT", "max")

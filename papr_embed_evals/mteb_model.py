@@ -31,7 +31,7 @@ from .tasks import TASKS
 logger = logging.getLogger(__name__)
 
 
-# Every MTEB-registered task whose TRAIN split is in the papr-embed-v1 training
+# Every MTEB-registered task whose TRAIN split is in the papr-embed-schema-1 (formerly v1) training
 # mix. MTEB requires this declared: the leaderboard marks a model as trained on a
 # task it has seen, and reviewers explicitly check submissions for train-split
 # leakage. Omitting it is the difference between a permitted in-domain result and

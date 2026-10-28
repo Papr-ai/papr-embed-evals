@@ -35,7 +35,7 @@ def main() -> int:
     # that distinguishes a cold start from a failure.
     client = PaprEmbeddingsClient(timeout_s=TIMEOUT, max_attempts=1)
     worst = 0
-    for model in ("papr-embed-v1-0.6b", "papr-embed-v1-4b"):
+    for model in ("papr-embed-schema-1-0.6b", "papr-embed-schema-1-4b"):
         for attempt in range(1, REPEATS + 1):
             started = time.time()
             label = f"{model:20s} call {attempt}"

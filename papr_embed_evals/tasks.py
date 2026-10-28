@@ -28,10 +28,11 @@ from typing import Literal, Optional
 
 GENERIC_INSTRUCTION = "Retrieve text based on user query."
 
-# Models (papr-embed-v1 lineup). The scifact model pins its schema server-side.
-SCIFACT_MODEL = "papr-embed-v1-0.6b-scifact"
-GENERAL_MODEL = "papr-embed-v1-0.6b"
-LARGE_MODEL = "papr-embed-v1-4b"
+# Models (papr-embed-schema-1 lineup, formerly papr-embed-v1; the old IDs still
+# resolve as aliases on the API). The scifact model pins its schema server-side.
+SCIFACT_MODEL = "papr-embed-schema-1-0.6b-scifact"
+GENERAL_MODEL = "papr-embed-schema-1-0.6b"
+LARGE_MODEL = "papr-embed-schema-1-4b"
 
 
 @dataclass(frozen=True)

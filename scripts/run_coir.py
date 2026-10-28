@@ -10,7 +10,7 @@ the runner prints a cost estimate before starting each task.
     PAPR_API_KEY=... REASONING=1 python scripts/run_coir.py            # reasoning variant
 
 Variant knobs (all optional):
-    MODEL=papr-embed-v1-4b        override the per-task default model
+    MODEL=papr-embed-schema-1-4b        override the per-task default model
     REASONING=1 TIER=frontier EFFORT=max     reasoning tier/effort
     QUERIES_ONLY=1                COST-BOUNDING EXCEPTION ONLY: reasoning on
                                   queries while documents keep student bands --

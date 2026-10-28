@@ -5,7 +5,9 @@ was chosen by a measurement, not a guess. This file records which measurement,
 so a reviewer (or MTEB) can audit each choice without access to our internal
 training repo.
 
-## 1. What a papr-embed-v1 embedding is
+## 1. What a papr-embed-schema-1 embedding is
+
+(papr-embed-schema-1 was called papr-embed-v1 until October 2026; historical result files below keep the old names.)
 
 The models export a single unit-norm vector
 
