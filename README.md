@@ -6,7 +6,7 @@ Reproduce the [papr-embed](https://huggingface.co/papr-ai) retrieval results
 | Series | How you run it | Script |
 |---|---|---|
 | **papr-embed-code-1** (4B, 0.6B), open weights, Apache-2.0 | Download from [Hugging Face](https://huggingface.co/papr-ai) and run locally on a GPU. Both models are registered in `mteb`. | `scripts/run_code1.py` |
-| **papr-embed-schema-1** (4B, 0.6B), schema-conditioned | Call the [Papr embeddings API](https://platform.papr.ai) with an API key. No weights needed. | `scripts/run_scifact.py`, `scripts/run_coir.py` |
+| **papr-embed-schema-1** (4B, 0.6B), schema-native | Call the [Papr embeddings API](https://platform.papr.ai) with an API key. No weights needed. | `scripts/run_scifact.py`, `scripts/run_coir.py` |
 
 ## Quick start: code-1 (open weights)
 
