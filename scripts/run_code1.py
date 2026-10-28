@@ -11,7 +11,7 @@ weights from Hugging Face and runs them locally through the model entry that shi
 Models: papr-ai/papr-embed-code-1-4b and papr-ai/papr-embed-code-1-0.6b
         (https://huggingface.co/papr-ai). A GPU is needed; fp32 reference precision.
 Results are written in the standard mteb layout under --out, the same format as the
-leaderboard's results repo. Published numbers: 4B CoIR 80.13, 0.6B CoIR 77.19.
+leaderboard's results repo. Published numbers: 4B CoIR 80.12, 0.6B CoIR 77.16 (see README).
 """
 from __future__ import annotations
 
@@ -30,13 +30,21 @@ def main() -> None:
                     help="'coir' (the 10-task benchmark) or a comma-separated list of mteb task names")
     ap.add_argument("--out", default="results/code1", help="output folder (mteb cache layout)")
     ap.add_argument("--batch", type=int, default=32,
-                    help="batch size. Lower to 16 if a task runs out of GPU memory in fp32 on a "
-                         "80 GB card (Apps, StackOverflowQA, CodeFeedback, CodeSearchNet need it)")
+                    help="batch size. The long-document tasks need 4 at 32k context (1 for SWEbench) "
+                         "on an 80 GB card in fp32")
+    ap.add_argument("--max-len", type=int, default=None,
+                    help="max sequence length. Default: the mteb entry's 8192. The published numbers "
+                         "use 32768 for the tasks with documents over 8k tokens (Apps, StackOverflowQA, "
+                         "CodeFeedbackMT, both CodeSearchNet variants, SWEbench)")
     a = ap.parse_args()
 
     meta = mteb.get_model_meta(a.model)  # entry merged into mteb; carries the loader and prompts
     print(f"[model] {meta.name} revision={meta.revision[:8]} mteb={mteb.__version__}", flush=True)
     model = mteb.get_model(a.model)
+    if a.max_len:
+        st = getattr(model, "model", model)  # the SentenceTransformer inside mteb's wrapper
+        st.max_seq_length = a.max_len
+        print(f"[model] max_seq_length={st.max_seq_length}", flush=True)
 
     names = [t.strip() for t in a.tasks.split(",") if t.strip()]
     tasks = []
